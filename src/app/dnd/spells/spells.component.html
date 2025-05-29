@@ -1,0 +1,6 @@
+<h2>Spells D&D 5e</h2>
+<ul>
+  <li *ngFor="let spell of spells">
+    {{ spell.name }} ({{ spell | json }})
+  </li>
+</ul>
