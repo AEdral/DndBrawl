@@ -1,0 +1,60 @@
+/* Contenitore a due colonne */
+.dnd-layout {
+    display: flex;
+    height: calc(100vh - 60px - 40px); /* altezza finestra meno navbar e footer */
+  }
+  
+  /* Colonna sinistra che occupa tutto il lato sinistro */
+  .left-column {
+    width: 30%;
+    background-color: #f0f0f0;
+    padding: 1rem;
+    overflow-y: auto;
+    border-right: 1px solid #ccc;
+  }
+  
+  /* Scroll verticale su contenuto lungo */
+  .left-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .left-column li {
+    padding: 0.5rem;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .left-column li:hover {
+    background-color: #e0e0e0;
+  }
+  
+
+  .right-column {
+    flex: 1;
+    padding: 1rem;
+    overflow-y: auto;
+    height: 100%;
+    box-sizing: border-box;
+  }
+  
+  .right-column h3 {
+    margin-top: 1.5rem;
+  }
+  
+  .right-column ul {
+    padding-left: 1.2rem;
+  }
+  
+  footer {
+    height: 60px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #ddd;
+    text-align: center;
+    line-height: 60px;
+  }

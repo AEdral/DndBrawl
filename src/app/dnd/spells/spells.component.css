@@ -1,0 +1,82 @@
+/* Layout principale a due colonne */
+.dnd-layout {
+  display: flex;
+  height: calc(100vh - 60px - 40px); /* Altezza finestra meno navbar (60px) e footer (40px) */
+  overflow: hidden;
+}
+
+/* Colonna sinistra */
+.left-column {
+  flex: 0 0 30%; /* larghezza fissa al 30%, non cresce né si riduce */
+  background-color: #f0f0f0;
+  padding: 1rem;
+  overflow-y: auto;
+  border-right: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+/* Lista scrollabile */
+.left-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.left-column li {
+  padding: 0.5rem;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  word-wrap: break-word;
+}
+
+.left-column li:hover {
+  background-color: #e0e0e0;
+}
+
+/* Colonna destra */
+.right-column {
+  flex: 1; /* prende lo spazio rimanente */
+  padding: 1rem;
+  overflow-y: auto;
+  background-color: #fff;
+  box-sizing: border-box;
+  min-width: 0; /* previene espansione orizzontale indesiderata */
+  word-break: break-word; /* forza a capo stringhe lunghe */
+}
+
+/* Intestazioni e dettagli spell */
+.right-column h3 {
+  margin-top: 1.5rem;
+}
+
+.right-column ul {
+  padding-left: 1.2rem;
+}
+
+.spell-details {
+  padding: 1rem;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.spell-details h2 {
+  margin-top: 0;
+}
+
+.spell-details h3 {
+  margin-top: 1.5rem;
+}
+
+/* Footer fisso */
+footer {
+  height: 40px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #ddd;
+  text-align: center;
+  line-height: 40px;
+  z-index: 10;
+}

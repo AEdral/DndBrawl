@@ -1,6 +1,77 @@
-<h2>Spells D&D 5e</h2>
-<ul>
-  <li *ngFor="let spell of spells">
-    {{ spell.name }} ({{ spell | json }})
-  </li>
-</ul>
+<div class="dnd-layout">
+  <!-- COLONNA SINISTRA -->
+  <div class="left-column">
+    <h2>Spells D&D 5e</h2>
+    <ul>
+      <li *ngFor="let spell of spells" (click)="selectSpell(spell)">
+        {{ spell.name }} <!--{{spell | json}}-->
+      </li>
+    </ul>
+  </div>
+
+  <!-- COLONNA DESTRA (vuota per ora) -->
+  <div *ngIf="selectedSpell" class="spell-details">
+    <h2>{{ selectedSpell.name }}</h2>
+  
+    <!-- Livello e Scuola -->
+    <p><strong>Livello:</strong> {{ selectedSpell.level || 'N/D' }}</p>
+    <p><strong>Scuola:</strong> {{ selectedSpell.school?.name || 'N/D' }}</p>
+  
+    <!-- Tempo di lancio, Durata, Range -->
+    <p><strong>Tempo di lancio:</strong> {{ selectedSpell.casting_time || 'N/D' }}</p>
+    <p><strong>Durata:</strong> {{ selectedSpell.duration || 'N/D' }}</p>
+    <p><strong>Gittata:</strong> {{ selectedSpell.range || 'N/D' }}</p>
+  
+    <!-- Componenti -->
+    <p *ngIf="selectedSpell.components">
+      <strong>Componenti:</strong> {{ selectedSpell.components.join(', ') }}
+    </p>
+  
+    <!-- Ritual / Concentration -->
+    <p><strong>Rituale:</strong> {{ selectedSpell.ritual ? 'Sì' : 'No' }}</p>
+    <p><strong>Concentrazione:</strong> {{ selectedSpell.concentration ? 'Sì' : 'No' }}</p>
+  
+    <!-- Descrizione -->
+    <div *ngIf="selectedSpell.desc?.length">
+      <h3>Descrizione</h3>
+      <p *ngFor="let line of selectedSpell.desc">{{ line }}</p>
+    </div>
+  
+    <!-- Effetto ai livelli superiori -->
+    <div *ngIf="selectedSpell.higher_level?.length">
+      <h3>Livelli superiori</h3>
+      <p *ngFor="let line of selectedSpell.higher_level">{{ line }}</p>
+    </div>
+  
+    <!-- Cura per slot -->
+    <div *ngIf="selectedSpell.heal_at_slot_level">
+      <h3>Guarigione per slot</h3>
+      <ul>
+        <li *ngFor="let slot of getSlotLevels(selectedSpell)">
+          Livello {{ slot }}: {{ selectedSpell.heal_at_slot_level[slot] }} HP
+        </li>
+      </ul>
+    </div>
+  
+    <!-- Classi -->
+    <div *ngIf="selectedSpell.classes?.length">
+      <h3>Classi</h3>
+      <ul>
+        <li *ngFor="let cls of selectedSpell.classes">{{ cls.name }}</li>
+      </ul>
+    </div>
+  
+    <!-- Sottoclassi -->
+    <div *ngIf="selectedSpell.subclasses?.length">
+      <h3>Sottoclassi</h3>
+      <ul>
+        <li *ngFor="let sub of selectedSpell.subclasses">{{ sub.name }}</li>
+      </ul>
+    </div>
+  </div>
+  
+  <ng-template #noSpell>
+    <p>Seleziona uno spell per vedere i dettagli.</p>
+  </ng-template>
+  
+</div>

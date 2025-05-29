@@ -1,6 +1,109 @@
-<h2>Classi D&D 5e</h2>
-<ul>
-  <li *ngFor="let classe of classes">
-    {{ classe.name }} ({{ classe | json }})
-  </li>
-</ul>
+<div class="dnd-layout">
+  <!-- Colonna sinistra -->
+  <div class="left-column">
+    <h2>Classi D&D 5e</h2>
+    <ul>
+      <li *ngFor="let classe of classes" (click)="selectClass(classe)">
+        {{ classe.name }}
+      </li>
+    </ul>
+  </div>
+
+  <!-- Colonna destra -->
+  <div class="right-column">
+    <div *ngIf="selectedClass; else placeholder">
+      <h2>{{ selectedClass.name }}</h2>
+      <p><strong>Hit Die:</strong> d{{ selectedClass.hit_die }}</p>
+
+      <!-- Proficiency Choices -->
+      <div *ngIf="selectedClass.proficiency_choices?.length">
+        <h3>Proficiency Choices</h3>
+        <div *ngFor="let choice of selectedClass.proficiency_choices">
+          <p>{{ choice.desc }}</p>
+          <ul>
+            <li *ngFor="let opt of choice.from.options">
+              {{ opt.item?.name || opt.of?.name || opt.choice?.desc || 'Altro' }}
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Proficiencies -->
+      <div>
+        <h3>Proficiencies</h3>
+        <ul>
+          <li *ngFor="let prof of selectedClass.proficiencies">
+            {{ prof.name }}
+          </li>
+        </ul>
+      </div>
+
+      <!-- Saving Throws -->
+      <div>
+        <h3>Saving Throws</h3>
+        <ul>
+          <li *ngFor="let save of selectedClass.saving_throws">
+            {{ save.name }}
+          </li>
+        </ul>
+      </div>
+
+      <!-- Starting Equipment -->
+      <div>
+        <h3>Starting Equipment</h3>
+        <ul>
+          <li *ngFor="let eq of selectedClass.starting_equipment">
+            {{ eq.quantity }} × {{ eq.equipment.name }}
+          </li>
+        </ul>
+      </div>
+
+      <!-- Starting Equipment Options -->
+      <div>
+        <h3>Equipment Options</h3>
+        <ul>
+          <li *ngFor="let opt of selectedClass.starting_equipment_options">
+            {{ opt.desc }}
+          </li>
+        </ul>
+      </div>
+
+      <!-- Multiclassing -->
+      <div *ngIf="selectedClass.multi_classing">
+        <h3>Multiclassing Prerequisites</h3>
+        <ul>
+          <li *ngFor="let req of selectedClass.multi_classing.prerequisites">
+            {{ req.ability_score.name }} ≥ {{ req.minimum_score }}
+          </li>
+        </ul>
+      </div>
+
+      <!-- Subclasses -->
+      <div *ngIf="selectedClass.subclasses?.length">
+        <h3>Subclasses</h3>
+        <ul>
+          <li *ngFor="let sub of selectedClass.subclasses">
+            {{ sub.name }}
+          </li>
+        </ul>
+      </div>
+
+      <!-- Spellcasting -->
+      <div *ngIf="selectedClass.spellcasting">
+        <h3>Spellcasting</h3>
+        <p><strong>Spellcasting Ability:</strong> {{ selectedClass.spellcasting.spellcasting_ability.name }}</p>
+        <div *ngFor="let info of selectedClass.spellcasting.info">
+          <h4>{{ info.name }}</h4>
+          <ul>
+            <li *ngFor="let desc of info.desc">{{ desc }}</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <ng-template #placeholder>
+      <p>Seleziona una classe per vedere i dettagli.</p>
+    </ng-template>
+  </div>
+</div>
