@@ -12,6 +12,7 @@ import { RacesComponent } from './dnd/races/races.component';
 import { SpellsComponent } from './dnd/spells/spells.component';
 import { FeatsComponent } from './dnd/feats/feats.component';
 import { ItemsComponent } from './dnd/items/items.component';
+import { FeaturesComponent } from './dnd/features/features.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -25,6 +26,7 @@ const routes: Routes = [
   { path: 'spells', component: SpellsComponent },
   { path: 'feats', component: FeatsComponent },
   { path: 'items', component: ItemsComponent },
+  { path: 'features', component: FeaturesComponent },
   { path: '**', component: PageNotFoundComponent },  // Redirect to home if no route is matched
 ];
 

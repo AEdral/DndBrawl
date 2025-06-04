@@ -1,6 +1,13 @@
 <div class="dnd-layout">
+  
+  <!-- Pulsante Toggle 
+  <button class="toggle-button" (click)="toggleSidebar()">
+    {{ sidebarVisible ? '⏪' : '⏩' }}
+  </button>
+  -->
+
   <!-- Colonna sinistra -->
-  <div class="left-column">
+  <div class="left-column" *ngIf="sidebarVisible">
     <h2>Classi D&D 5e</h2>
     <ul>
       <li *ngFor="let classe of classes" (click)="selectClass(classe)">
@@ -10,100 +17,151 @@
   </div>
 
   <!-- Colonna destra -->
-  <div class="right-column">
-    <div *ngIf="selectedClass; else placeholder">
+  <div class="right-column" [class.full-width]="!sidebarVisible">
+
+    <!--
+    <a [routerLink]="['/features']" [queryParams]="{ url: '/api/2014/features/' }">
+      Accedi a Features
+    </a>
+    -->
+
+    <div *ngIf="selectedClass">
+
       <h2>{{ selectedClass.name }}</h2>
       <p><strong>Hit Die:</strong> d{{ selectedClass.hit_die }}</p>
-
+    
       <!-- Proficiency Choices -->
-      <div *ngIf="selectedClass.proficiency_choices?.length">
+      <section *ngIf="selectedClass.proficiency_choices?.length">
         <h3>Proficiency Choices</h3>
         <div *ngFor="let choice of selectedClass.proficiency_choices">
           <p>{{ choice.desc }}</p>
           <ul>
-            <li *ngFor="let opt of choice.from.options">
-              {{ opt.item?.name || opt.of?.name || opt.choice?.desc || 'Altro' }}
+            <li *ngFor="let option of choice.from.options">
+              <a *ngIf="option.item?.url" 
+                 [routerLink]="['/features']" 
+                 [queryParams]="{ url: option.item.url }">
+                {{ option.item.name }}
+              </a>
             </li>
           </ul>
         </div>
-      </div>
-
-      <!-- Proficiencies -->
-      <div>
+      </section>
+    
+      <!-- Fixed Proficiencies -->
+      <section *ngIf="selectedClass.proficiencies?.length">
         <h3>Proficiencies</h3>
         <ul>
           <li *ngFor="let prof of selectedClass.proficiencies">
-            {{ prof.name }}
+            <a [routerLink]="['/features']" [queryParams]="{ url: prof.url }">
+              {{ prof.name }}
+            </a>
           </li>
         </ul>
-      </div>
-
+      </section>
+    
       <!-- Saving Throws -->
-      <div>
+      <section *ngIf="selectedClass.saving_throws?.length">
         <h3>Saving Throws</h3>
         <ul>
-          <li *ngFor="let save of selectedClass.saving_throws">
-            {{ save.name }}
+          <li *ngFor="let st of selectedClass.saving_throws">
+            <a [routerLink]="['/features']" [queryParams]="{ url: st.url }">
+              {{ st.name }}
+            </a>
           </li>
         </ul>
-      </div>
-
+      </section>
+    
       <!-- Starting Equipment -->
-      <div>
+      <section *ngIf="selectedClass.starting_equipment?.length">
         <h3>Starting Equipment</h3>
         <ul>
           <li *ngFor="let eq of selectedClass.starting_equipment">
-            {{ eq.quantity }} × {{ eq.equipment.name }}
+            <a [routerLink]="['/features']" [queryParams]="{ url: eq.equipment.url }">
+              {{ eq.equipment.name }}
+            </a>
+            (x{{ eq.quantity }})
           </li>
         </ul>
-      </div>
-
+      </section>
+    
       <!-- Starting Equipment Options -->
-      <div>
-        <h3>Equipment Options</h3>
-        <ul>
-          <li *ngFor="let opt of selectedClass.starting_equipment_options">
-            {{ opt.desc }}
-          </li>
-        </ul>
-      </div>
-
-      <!-- Multiclassing -->
-      <div *ngIf="selectedClass.multi_classing">
-        <h3>Multiclassing Prerequisites</h3>
-        <ul>
-          <li *ngFor="let req of selectedClass.multi_classing.prerequisites">
-            {{ req.ability_score.name }} ≥ {{ req.minimum_score }}
-          </li>
-        </ul>
-      </div>
-
-      <!-- Subclasses -->
-      <div *ngIf="selectedClass.subclasses?.length">
-        <h3>Subclasses</h3>
-        <ul>
-          <li *ngFor="let sub of selectedClass.subclasses">
-            {{ sub.name }}
-          </li>
-        </ul>
-      </div>
-
-      <!-- Spellcasting -->
-      <div *ngIf="selectedClass.spellcasting">
-        <h3>Spellcasting</h3>
-        <p><strong>Spellcasting Ability:</strong> {{ selectedClass.spellcasting.spellcasting_ability.name }}</p>
-        <div *ngFor="let info of selectedClass.spellcasting.info">
-          <h4>{{ info.name }}</h4>
-          <ul>
-            <li *ngFor="let desc of info.desc">{{ desc }}</li>
+      <section *ngIf="selectedClass.starting_equipment_options?.length">
+        <h3>Starting Equipment Options</h3>
+        <div *ngFor="let option of selectedClass.starting_equipment_options">
+          <p>{{ option.desc }}</p>
+          <ul *ngIf="option.from?.options">
+            <li *ngFor="let opt of option.from.options">
+              <ng-container *ngIf="opt.of">
+                <a [routerLink]="['/features']" [queryParams]="{ url: opt.of.url }">
+                  {{ opt.count }}x {{ opt.of.name }}
+                </a>
+              </ng-container>
+              <ng-container *ngIf="opt.choice">
+                {{ opt.choice.desc }}
+              </ng-container>
+            </li>
           </ul>
         </div>
-      </div>
+      </section>
 
+      <!-- Subclasses -->
+      <section *ngIf="selectedClass.subclasses?.length">
+        <h3>Sottoclassi</h3>
+        <ul>
+          <li *ngFor="let subclass of selectedClass.subclasses">
+            <a [routerLink]="['/features']" [queryParams]="{ url: subclass.url }">
+              {{ subclass.name }}
+            </a>
+          </li>
+        </ul>
+      </section>
+
+    
+    </div>
+    
+
+    <div *ngIf="selectedClassLevels; else placeholder" class="class-table-container">
+      <table class="class-levels-table">
+        <thead>
+          <tr>
+            <th *ngFor="let header of tableHeaders">{{ headerLabels[header] || formatHeader(header) }} </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let level of selectedClassLevels">
+            <td *ngFor="let header of tableHeaders">
+              <!-- Se il valore è un oggetto o array, gestisci con pipe o logica -->
+              <ng-container *ngIf="!isObject(level[header]); else complex">
+                {{ level[header] }}
+              </ng-container>
+              <ng-template #complex>
+                <ul *ngIf="isArray(level[header]); else singleObject">
+                  <li *ngFor="let item of level[header]">
+                    <a *ngIf="item.url" [routerLink]="['/features']" [queryParams]="{ url: item.url }">
+                      {{ item.name || item.index || 'Link' }}
+                    </a>
+                    <span *ngIf="!item.url">{{ item.name || item.index || (item | json) }}</span>
+                  </li>
+                </ul>
+                <ng-template #singleObject>
+                  <a *ngIf="level[header].url" [routerLink]="['/features']" [queryParams]="{ url: level[header].url }">
+                    {{ level[header].name || level[header].index || 'Link' }}
+                  </a>
+                  <span *ngIf="!level[header].url">{{ level[header] | json }}</span>
+                </ng-template>
+              </ng-template>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     <ng-template #placeholder>
       <p>Seleziona una classe per vedere i dettagli.</p>
     </ng-template>
+
+    <ng-template #none>
+    </ng-template>
+    
   </div>
 </div>

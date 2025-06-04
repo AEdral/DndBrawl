@@ -1,1 +1,140 @@
-<p>races works!</p>
+<div class="dnd-layout">
+  
+    <!-- Pulsante Toggle 
+    <button class="toggle-button" (click)="toggleSidebar()">
+      {{ sidebarVisible ? '⏪' : '⏩' }}
+    </button>
+    -->
+  
+    <!-- Colonna sinistra -->
+    <div class="left-column" >
+      <h2>Classi D&D 5e</h2>
+      <ul>
+        <li *ngFor="let race of races" (click)="selectRace(race)">
+          {{ race.name }}
+        </li>
+      </ul>
+    </div>
+  
+    <!-- Colonna destra -->
+    <div class="right-column">
+  
+        <!--
+      <a [routerLink]="['/features']" [queryParams]="{ url: '/api/2014/features/' }">
+        Accedi a Features
+      </a>  
+      -->    
+
+      <div *ngIf="selectedRace">
+
+        <h2>{{ selectedRace.name }}</h2>
+      
+        <p><strong>Velocità:</strong> {{ selectedRace.speed }} piedi</p>
+      
+        <!-- Ability Bonuses -->
+        <section *ngIf="selectedRace.ability_bonuses?.length">
+          <h3>Bonus alle Abilità</h3>
+          <ul>
+            <li *ngFor="let bonus of selectedRace.ability_bonuses">
+              <a [routerLink]="['/features']" [queryParams]="{ url: bonus.ability_score.url }">
+                {{ bonus.ability_score.name }}
+              </a>: +{{ bonus.bonus }}
+            </li>
+          </ul>
+        </section>
+      
+        <!-- Ability Bonus Options -->
+        <section *ngIf="selectedRace.ability_bonus_options?.from?.options?.length">
+          <h3>Bonus Abilità Opzionali (scegli {{ selectedRace.ability_bonus_options.choose }})</h3>
+          <ul>
+            <li *ngFor="let opt of selectedRace.ability_bonus_options.from.options">
+              <a [routerLink]="['/features']" [queryParams]="{ url: opt.ability_score.url }">
+                {{ opt.ability_score.name }}
+              </a>: +{{ opt.bonus }}
+            </li>
+          </ul>
+        </section>
+      
+        <!-- Allineamento -->
+        <p><strong>Allineamento:</strong> {{ selectedRace.alignment }}</p>
+      
+        <!-- Età -->
+        <p><strong>Età:</strong> {{ selectedRace.age }}</p>
+      
+        <!-- Taglia -->
+        <p><strong>Taglia:</strong> {{ selectedRace.size }} – {{ selectedRace.size_description }}</p>
+      
+        <!-- Proficiencies Opzionali -->
+        <section *ngIf="selectedRace.starting_proficiency_options?.from?.options?.length">
+          <h3>Competenze Iniziali Opzionali (scegli {{ selectedRace.starting_proficiency_options.choose }})</h3>
+          <ul>
+            <li *ngFor="let option of selectedRace.starting_proficiency_options.from.options">
+              <a [routerLink]="['/features']" [queryParams]="{ url: option.item.url }">
+                {{ option.item.name }}
+              </a>
+            </li>
+          </ul>
+        </section>
+      
+        <!-- Lingue -->
+        <section *ngIf="selectedRace.languages?.length">
+          <h3>Lingue Conosciute</h3>
+          <ul>
+            <li *ngFor="let lang of selectedRace.languages">
+              <a [routerLink]="['/features']" [queryParams]="{ url: lang.url }">
+                {{ lang.name }}
+              </a>
+            </li>
+          </ul>
+          <p><em>{{ selectedRace.language_desc }}</em></p>
+        </section>
+      
+        <!-- Lingue Opzionali -->
+        <section *ngIf="selectedRace.language_options?.from?.options?.length">
+          <h3>Lingua Bonus (scegli {{ selectedRace.language_options.choose }})</h3>
+          <ul>
+            <li *ngFor="let opt of selectedRace.language_options.from.options">
+              <a [routerLink]="['/features']" [queryParams]="{ url: opt.item.url }">
+                {{ opt.item.name }}
+              </a>
+            </li>
+          </ul>
+        </section>
+      
+        <!-- Tratti -->
+        <section *ngIf="selectedRace.traits?.length">
+          <h3>Tratti</h3>
+          <ul>
+            <li *ngFor="let trait of selectedRace.traits">
+              <a [routerLink]="['/features']" [queryParams]="{ url: trait.url }">
+                {{ trait.name }}
+              </a>
+            </li>
+          </ul>
+        </section>
+      
+        <!-- Sottorazze -->
+        <section *ngIf="selectedRace.subraces?.length">
+          <h3>Sottorazze</h3>
+          <ul>
+            <li *ngFor="let sub of selectedRace.subraces">
+              <a [routerLink]="['/features']" [queryParams]="{ url: sub.url }">
+                {{ sub.name }}
+              </a>
+            </li>
+          </ul>
+        </section>
+      
+        <!-- Debug JSON opzionale -->
+        <!-- <pre>{{ selectedRace | json }}</pre> -->
+      
+      </div>
+      
+      <div *ngIf="!selectedRace">
+        <p>Seleziona una razza per vedere i dettagli.</p>
+      </div>
+      
+      
+
+    </div>
+</div>

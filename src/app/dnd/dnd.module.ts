@@ -5,6 +5,9 @@ import { RacesComponent } from './races/races.component';
 import { FeatsComponent } from './feats/feats.component';
 import { SpellsComponent } from './spells/spells.component';
 import { ItemsComponent } from './items/items.component';
+import { FeaturesComponent } from './features/features.component';
+import { HttpClientModule } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -12,10 +15,13 @@ import { ItemsComponent } from './items/items.component';
     RacesComponent,
     FeatsComponent,
     SpellsComponent,
-    ItemsComponent
+    ItemsComponent,
+    FeaturesComponent
   ],
   imports: [
-    CommonModule // ✅ serve per usare *ngFor, *ngIf, ecc.
+    CommonModule, // ✅ serve per usare *ngFor, *ngIf, ecc.
+    RouterModule,
+    HttpClientModule
   ]
 })
 export class DndModule { }

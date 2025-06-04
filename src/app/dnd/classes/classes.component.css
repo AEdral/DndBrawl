@@ -58,3 +58,95 @@
     text-align: center;
     line-height: 60px;
   }
+
+  /* Pulsante toggle */
+.toggle-button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 10;
+  padding: 4px 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+/* Contenitore principale */
+.dnd-layout {
+  display: flex;
+  height: calc(100vh - 60px - 40px);
+  position: relative;
+}
+
+/* Colonna sinistra */
+.left-column {
+  width: 30%;
+  background-color: #f0f0f0;
+  padding: 1rem;
+  overflow-y: auto;
+  border-right: 1px solid #ccc;
+  transition: width 0.3s;
+}
+
+/* Colonna destra */
+.right-column {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  height: 100%;
+  box-sizing: border-box;
+  transition: width 0.3s;
+}
+
+/* Quando la sidebar è nascosta */
+.right-column.full-width {
+  width: 100%;
+}
+
+
+.class-table-container {
+  overflow-x: auto;
+  padding: 1rem;
+}
+
+.class-levels-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  background-color: #fff;
+}
+
+.class-levels-table thead {
+  background-color: #333;
+  color: white;
+}
+
+.class-levels-table th,
+.class-levels-table td {
+  padding: 4px 8px; /* padding verticale ridotto */
+  border: 1px solid #ccc;
+  vertical-align: top;
+  text-align: left;
+  line-height: 1.2; /* compatta il testo */
+  font-size: 13px; /* leggermente più piccolo se serve compattezza */
+}
+
+.class-levels-table ul {
+  margin: 0;
+  padding-left: 16px;
+}
+
+.class-levels-table li {
+  margin: 0;
+  padding: 0;
+  line-height: 1.2;
+}
+
+.class-levels-table a {
+  color: #0066cc;
+  text-decoration: none;
+  font-size: 13px;
+}

@@ -1,0 +1,13 @@
+  <!--
+  <a [routerLink]="['/classes']" [queryParams]="{ name: 'barbarian' }">
+    Vai alla classe Barbarian
+  </a>
+  -->
+  <div *ngIf="data; else loading">
+    <pre>{{ data | json }}</pre>
+  </div>
+  
+  <ng-template #loading>
+    <p>Loading feature data...</p>
+  </ng-template>
+  
